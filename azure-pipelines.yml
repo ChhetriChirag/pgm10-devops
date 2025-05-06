@@ -1,44 +1,16 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-# Azure Pipeline for Java using Maven
-# Builds, runs tests, publishes artifacts
 trigger:
 - main
 
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  buildConfiguration: 'Release'
-
 steps:
-# Checkout source code
-- checkout: self
-
-# Run Maven build and tests
 - task: Maven@3
   inputs:
-    mavenPomFile: 'pom.xml' # Adjust path if pom.xml is in a subdirectory
+    mavenPomFile: 'pom.xml'
     goals: 'package'
-    mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
+    jdkVersionOption: '1.17'
     jdkArchitectureOption: 'x64'
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
-
-# Publish test results
-- task: PublishTestResults@2
-  inputs:
-    testResultsFiles: '**/surefire-reports/TEST-*.xml'
-    testRunTitle: 'Maven Unit Tests'
-  condition: succeededOrFailed()
-
-# Publish JAR/WAR file as artifact
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'target'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
