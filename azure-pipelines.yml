@@ -15,7 +15,7 @@ steps:
 - checkout: self
 
 # Run Maven build and tests
-- task: Maven@4
+- task: Maven@3
   inputs:
     mavenPomFile: 'Javateam/pom.xml' # Adjust path if pom.xml is in a subdirectory
     goals: 'package'
