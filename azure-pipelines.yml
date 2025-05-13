@@ -14,12 +14,18 @@ steps:
 # Checkout source code
 - checkout: self
 
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '17'
+    jdkArchitecture: 'x64'
+    jdkSourceOption: 'PreInstalled'
+
 # Run Maven build and tests
 - task: Maven@4
   inputs:
     mavenPomFile: 'Javateam/pom.xml' # Adjust path if pom.xml is in a subdirectory
-    goals: 'package'
-    mavenOptions: '-Xmx3072m'
+    goals: 'clean install'
+    mavenOptions: '-DskipTests'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.11'
     jdkArchitectureOption: 'x64'
