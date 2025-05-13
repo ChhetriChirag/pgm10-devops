@@ -14,21 +14,21 @@ steps:
 # Checkout source code
 - checkout: self
 
+# Use JDK 17
 - task: JavaToolInstaller@0
   inputs:
     versionSpec: '17'
-    jdkArchitecture: 'x64'
+    jdkArchitectureOption: 'x64'
     jdkSourceOption: 'PreInstalled'
 
-# Run Maven build and tests
+# Run Maven build
 - task: Maven@4
   inputs:
-    mavenPomFile: 'Javateam/pom.xml' # Adjust path if pom.xml is in a subdirectory
+    mavenPomFile: 'Javateam/pom.xml'   # Adjust if pom.xml is elsewhere
     goals: 'clean install'
-    mavenOptions: '-DskipTests'
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.11'
-    jdkArchitectureOption: 'x64'
+    options: '-DskipTests'
+    javaHomeOption: 'Path'
+    jdkDirectory: $(JAVA_HOME)         # Uses Java 17 from JavaToolInstaller
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
 
@@ -39,9 +39,9 @@ steps:
     testRunTitle: 'Maven Unit Tests'
   condition: succeededOrFailed()
 
-# Publish JAR/WAR file as artifact
+# Publish build artifact (JAR/WAR)
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: 'target'
+    PathtoPublish: 'Javateam/target'   # Ensure this path matches output
     ArtifactName: 'drop'
     publishLocation: 'Container'
