@@ -17,7 +17,7 @@ steps:
 # Run Maven build and tests
 - task: Maven@3
   inputs:
-    mavenPomFile: 'pom.xml' # Adjust path if pom.xml is in a subdirectory
+    mavenPomFile: 'Javateam/pom.xml' # Adjust path if pom.xml is in a subdirectory
     goals: 'package'
     mavenOptions: '-Xmx3072m'
     javaHomeOption: 'JDKVersion'
